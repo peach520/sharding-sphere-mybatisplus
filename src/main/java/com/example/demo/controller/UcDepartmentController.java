@@ -1,9 +1,15 @@
 package com.example.demo.controller;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.entity.UcDepartmentDO;
 import com.example.demo.service.UcDepartmentService;
+import com.google.common.collect.Maps;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * @Author YYT
@@ -18,8 +24,15 @@ public class UcDepartmentController {
     }
 
 
-    @PostMapping("insert")
+    @PostMapping("insertDepartment")
     public Object insert(){
         return ucDepartmentService.save(new UcDepartmentDO().setOrgId("43a00").setDeptId("testDeptId").setDeptName("testName"));
+    }
+
+    @GetMapping("queryDepartment")
+    public Object getDepartmentByOrgId(){
+        Map<String,Object> query = Maps.newHashMap();
+        query.put("org_id","43a00");
+        return ucDepartmentService.listByMap(query);
     }
 }

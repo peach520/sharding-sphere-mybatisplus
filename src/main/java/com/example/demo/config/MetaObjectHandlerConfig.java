@@ -22,7 +22,7 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
         HashSet<String> setterNameSet = new HashSet<>(Arrays.asList(setterNames));
         if (setterNameSet.contains("deleted")) {
             //默认未删除
-            setFieldValByName("deleted", 1, metaObject);
+            setFieldValByName("deleted", 0, metaObject);
         }
         if (setterNameSet.contains("gmtCreate")) {
             //创建时间默认当前时间
