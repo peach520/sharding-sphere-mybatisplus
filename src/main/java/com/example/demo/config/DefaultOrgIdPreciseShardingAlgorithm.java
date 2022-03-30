@@ -2,8 +2,9 @@ package com.example.demo.config;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
-import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.standard.PreciseShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.standard.RangeShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.standard.StandardShardingAlgorithm;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
@@ -16,7 +17,20 @@ import java.util.stream.Collectors;
  **/
 @Slf4j
 @NoArgsConstructor
-public class DefaultOrgIdPreciseShardingAlgorithm implements PreciseShardingAlgorithm<String> {
+public class DefaultOrgIdPreciseShardingAlgorithm implements StandardShardingAlgorithm<String> {
+
+    @Override
+    public Collection<String> doSharding(Collection<String> collection, RangeShardingValue<String> rangeShardingValue) {
+        return null;
+    }
+
+    private String getSuffix(String orgId) {
+        if (StringUtils.isEmpty(orgId)) {
+            return "99";
+        }
+        return orgId.substring(0, 2);
+    }
+
     @Override
     public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<String> preciseShardingValue) {
         String index = getSuffix(preciseShardingValue.getValue());
@@ -31,10 +45,13 @@ public class DefaultOrgIdPreciseShardingAlgorithm implements PreciseShardingAlgo
         throw new RuntimeException("分库路由获取失败");
     }
 
-    private String getSuffix(String orgId) {
-        if (StringUtils.isEmpty(orgId)) {
-            return "99";
-        }
-        return orgId.substring(0, 2);
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public String getType() {
+        return "CLASS_BASED";
     }
 }

@@ -23,16 +23,16 @@ public class UcUserController {
 
 
     @PostMapping("insertUser")
-    public Object insert(){
-        userService.save(new UcUserDO().setUserName("test2").setOrgId("11aaa").setGender(0));
-        return userService.save(new UcUserDO().setUserName("test1").setOrgId("11aaa").setGender(1));
+    public Object insert(String orgId, Integer gender) {
+
+        return userService.save(new UcUserDO().setUserName("testUser" + orgId).setOrgId(orgId).setGender(gender));
     }
 
     @GetMapping("queryUser")
-    public Object queryUser(){
-        Map<String,Object> query = Maps.newHashMap();
-        query.put("org_id","11aaa");
-        query.put("gender",0);
+    public Object queryUser(String orgId, Integer gender) {
+        Map<String, Object> query = Maps.newHashMap();
+        query.put("org_id", orgId);
+        query.put("gender", gender);
         return userService.listByMap(query);
     }
 }

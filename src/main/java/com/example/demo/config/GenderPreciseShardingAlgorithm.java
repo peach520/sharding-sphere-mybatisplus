@@ -2,9 +2,9 @@ package com.example.demo.config;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
-import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
-import org.springframework.util.StringUtils;
+import org.apache.shardingsphere.sharding.api.sharding.standard.PreciseShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.standard.RangeShardingValue;
+import org.apache.shardingsphere.sharding.api.sharding.standard.StandardShardingAlgorithm;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  **/
 @Slf4j
 @NoArgsConstructor
-public class GenderPreciseShardingAlgorithm implements PreciseShardingAlgorithm<Integer> {
+public class GenderPreciseShardingAlgorithm implements StandardShardingAlgorithm<Integer> {
     @Override
     public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<Integer> preciseShardingValue) {
         List<String> datasourceList = availableTargetNames
@@ -30,4 +30,18 @@ public class GenderPreciseShardingAlgorithm implements PreciseShardingAlgorithm<
         throw new RuntimeException("分库路由获取失败");
     }
 
+    @Override
+    public Collection<String> doSharding(Collection<String> collection, RangeShardingValue<Integer> rangeShardingValue) {
+        return null;
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public String getType() {
+        return "CLASS_BASED";
+    }
 }
